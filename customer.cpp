@@ -9,7 +9,7 @@ customer::customer(QWidget *parent) :
     ui->setupUi(this);
     QStringList status;
     status << tr("保密") << tr("男") << tr("女");
-    ui->comboBox_2->addItems(status);
+    ui->sex->addItems(status);
     status.clear();
     status << tr("保密") << tr("已婚") << tr("未婚");
     ui->comboBox_3->addItems(status);
@@ -41,11 +41,11 @@ void customer::showEvent(QShowEvent *event)
         {
             ui->lineEdit_2->setDisabled(1);
             ui->lineEdit_2->setText(query.value(1).toString());
-            ui->comboBox_2->setCurrentText(query.value(2).toString());
+            ui->sex->setCurrentText(query.value(2).toString());
             ui->comboBox_3->setCurrentText(query.value(3).toString());
             ui->ID->setText(query.value(4).toString());
             ui->comboBox_4->setCurrentText(query.value(6).toString());
-            ui->lineEdit_4->setText(query.value(7).toString());
+            ui->phone->setText(query.value(7).toString());
             ui->lineEdit_5->setText(query.value(8).toString());
             ui->lineEdit_6->setText(query.value(9).toString());
             ui->comboBox_5->setCurrentText(query.value(10).toString());
@@ -73,7 +73,7 @@ void customer::showEvent(QShowEvent *event)
             ui->lineEdit_20->setText(query.value(34).toString());
             ui->lineEdit_21->setText(query.value(35).toString());
 
-            ui->dateEdit->setDate(query.value(5).toDate());
+            ui->birth->setDate(query.value(5).toDate());
             ui->dateEdit_2->setDate(query.value(27).toDate());
             ui->dateEdit_3->setDate(query.value(32).toDate());
         }
@@ -84,7 +84,7 @@ void customer::showEvent(QShowEvent *event)
         ui->lineEdit_2->setDisabled(0);
         ui->lineEdit_2->clear();
         ui->ID->clear();
-        ui->lineEdit_4->clear();
+        ui->phone->clear();
         ui->lineEdit_5->clear();
         ui->lineEdit_6->clear();
         ui->lineEdit_8->clear();
@@ -101,7 +101,7 @@ void customer::showEvent(QShowEvent *event)
         ui->lineEdit_20->clear();
         ui->lineEdit_21->clear();
 
-        ui->comboBox_2->setCurrentIndex(0);
+        ui->sex->setCurrentIndex(0);
         ui->comboBox_3->setCurrentIndex(0);
         ui->comboBox_4->setCurrentIndex(0);
         ui->comboBox_5->setCurrentIndex(0);
@@ -113,7 +113,7 @@ void customer::showEvent(QShowEvent *event)
         ui->comboBox_12->setCurrentIndex(0);
         ui->comboBox_13->setCurrentIndex(0);
 
-        ui->dateEdit->setDate(QDate::fromString("2000/01/01", "yyyy/MM/dd"));
+        ui->birth->setDate(QDate::fromString("2000/01/01", "yyyy/MM/dd"));
         ui->dateEdit_2->setDate(QDate::fromString("2000/01/01", "yyyy/MM/dd"));
         ui->dateEdit_3->setDate(QDate::fromString("2000/01/01", "yyyy/MM/dd"));
 
@@ -133,12 +133,12 @@ void customer::on_pushButton_clicked()
                 "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         // base
         query.bindValue(0, ui->lineEdit_2->text());
-        query.bindValue(1, ui->comboBox_2->currentText());
+        query.bindValue(1, ui->sex->currentText());
         query.bindValue(2, ui->comboBox_3->currentText());
         query.bindValue(3, ui->ID->text());
-        query.bindValue(4, ui->dateEdit->text());
+        query.bindValue(4, ui->birth->text());
         query.bindValue(5, ui->comboBox_4->currentText());
-        query.bindValue(6, ui->lineEdit_4->text());
+        query.bindValue(6, ui->phone->text());
         query.bindValue(7, ui->lineEdit_5->text());
         query.bindValue(8, ui->lineEdit_6->text());
         query.bindValue(9, ui->comboBox_5->currentText());
@@ -174,12 +174,12 @@ void customer::on_pushButton_clicked()
     {
         query.prepare("update customer set sex = ?,marriage = ?,id_card = ?,birthday = ?,native = ?,contact = ?,address = ?,company = ?,sz = ?,own_company = ?,income = ?,base_more = ?,credit_lines = ?,credit_debt = ?,debtA_bank = ?,debtA_bank_year_limit = ?,debtA_bank_monery_sum = ?,debtB_bank = ?,debtB_bank_year_limit = ?,debtB_bank_monery_sum = ?,debt_more = ?,szhouse = ?,redpaper = ?,mortgaged = ?,mpayment = ?,mpayment_day = ?,own_car = ?,car_year = ?,car_value = ?,own_policy = ?,policy_date = ?,policy_value = ?,person_mflow = ?,company_mflow = ? where name = ?;");
         // base
-        query.bindValue(0, ui->comboBox_2->currentText());
+        query.bindValue(0, ui->sex->currentText());
         query.bindValue(1, ui->comboBox_3->currentText());
         query.bindValue(2, ui->ID->text());
-        query.bindValue(3, ui->dateEdit->text());
+        query.bindValue(3, ui->birth->text());
         query.bindValue(4, ui->comboBox_4->currentText());
-        query.bindValue(5, ui->lineEdit_4->text());
+        query.bindValue(5, ui->phone->text());
         query.bindValue(6, ui->lineEdit_5->text());
         query.bindValue(7, ui->lineEdit_6->text());
         query.bindValue(8, ui->comboBox_5->currentText());
@@ -236,6 +236,27 @@ void customer::on_ID_editingFinished()
         return;
     }
 
-    QString birth = id.mid(6,8);
-    std::cout << birth.toStdString() << std::endl;
+    QString birth = id.mid(6,8).insert(4,'/').insert(7,'/');
+    ui->birth->setDate(QDate::fromString(birth, "yyyy/MM/dd"));
+
+    if (id.at(16).cell()& 0x1)
+    {
+        ui->sex->setCurrentIndex(1);
+    }
+    else
+    {
+        ui->sex->setCurrentIndex(2);
+    }
+}
+
+void customer::on_phone_editingFinished()
+{
+    QString phone = ui->phone->text().trimmed();
+    QRegExp phone_exp("[0-9]{11}");
+
+    if (phone_exp.exactMatch(phone) == false)
+    {
+        QMessageBox::information(this, "Err", "联系方式不对！ ");
+        return;
+    }
 }

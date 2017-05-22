@@ -83,7 +83,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox_2"/>
+         <widget class="QComboBox" name="sex"/>
         </item>
         <item>
          <widget class="QLabel" name="label_8">
@@ -148,7 +148,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QDateEdit" name="dateEdit">
+         <widget class="QDateEdit" name="birth">
           <property name="dateTime">
            <datetime>
             <hour>0</hour>
@@ -211,7 +211,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_4"/>
+         <widget class="QLineEdit" name="phone"/>
         </item>
        </layout>
       </item>

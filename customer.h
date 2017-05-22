@@ -25,6 +25,8 @@ private slots:
 
     void on_ID_editingFinished();
 
+    void on_phone_editingFinished();
+
 private:
     Ui::customer *ui;
 };
