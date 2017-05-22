@@ -1,39 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>regist</class>
- <widget class="QDialog" name="regist">
+ <class>change_passwd</class>
+ <widget class="QDialog" name="change_passwd">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>306</width>
-    <height>163</height>
+    <width>345</width>
+    <height>145</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>注册</string>
+   <string>密码更改</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="label">
        <property name="text">
-        <string>    帐号：</string>
+        <string>  旧密码：</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="lineEdit">
+       <property name="echoMode">
+        <enum>QLineEdit::Password</enum>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QLabel" name="label_3">
+      <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>    密码：</string>
+        <string>  新密码：</string>
        </property>
       </widget>
      </item>
@@ -49,9 +53,9 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <widget class="QLabel" name="label_4">
+      <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>密码确认：</string>
+        <string>重新输入：</string>
        </property>
       </widget>
      </item>
@@ -65,27 +69,9 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_5">
-     <item>
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>    邮箱：</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="lineEdit_4">
-       <property name="echoMode">
-        <enum>QLineEdit::Normal</enum>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
     <widget class="QPushButton" name="pushButton">
      <property name="text">
-      <string>注册</string>
+      <string>更改</string>
      </property>
     </widget>
    </item>

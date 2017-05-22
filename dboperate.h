@@ -9,13 +9,12 @@
 class dboperate
 {
 private:
-    QSqlDatabase m_dbconn;
-public:
+    static dboperate *db;
+    static QSqlDatabase m_dbconn;
     dboperate();
+public:
     ~dboperate();
-
-    bool add_user(QString &user, QString &passwd);
-    bool login(QString &user, QString &passwd);
+    static dboperate *instance();
 };
 
 #endif // DBOPERATE_H

@@ -2,9 +2,13 @@
 #define LOGIN_H
 
 #include <QDialog>
+#include <QMessageBox>
+#include <QToolTip>
 #include "dboperate.h"
 #include "regist.h"
+#include "get_back_passwd.h"
 #include "mainwindow.h"
+#include "user.h"
 
 namespace Ui {
 class login;
@@ -23,9 +27,9 @@ private slots:
     void on_pushButton_clicked();
 private:
     Ui::login *ui;
-    regist re;
+    regist *re;
+    get_back_passwd *back;
     MainWindow main;
-    dboperate *db;
 };
 
 #endif // LOGIN_H
