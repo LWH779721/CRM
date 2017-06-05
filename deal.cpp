@@ -12,6 +12,10 @@ deal::deal(QWidget *parent) :
     status.clear();
     status << tr("资料准备") << tr("银行面签") << tr("补资料") << tr("审批中") << tr("电核中") << tr("审批通过") << tr("等待放款") << tr("其他");
     ui->comboBox_17->addItems(status);
+
+    QRegExp regxp("[\u4e00-\u9fa5]*");
+    ui->saleman->setValidator(new QRegExpValidator(regxp,this));
+    ui->customer->setValidator(new QRegExpValidator(regxp,this));
 }
 
 deal::~deal()
@@ -23,8 +27,8 @@ void deal::showEvent(QShowEvent *event)
 {
     QSqlQuery query;
 
-    ui->comboBox->clear();
-    ui->comboBox_2->clear();
+    ui->saleman->clear();
+    ui->customer->clear();
     if (this->operate_flag == 2)
     {
         query.prepare("select * from deal where id = ?;");
@@ -33,12 +37,10 @@ void deal::showEvent(QShowEvent *event)
         if (query.next())
         {
             ui->dateTimeEdit->setDateTime(query.value(4).toDateTime());
-            ui->comboBox->addItem(query.value(1).toString());
-            ui->comboBox->setCurrentText(query.value(1).toString());
-            ui->comboBox_2->addItem(query.value(2).toString());
-            ui->comboBox_2->setCurrentText(query.value(2).toString());
-            ui->comboBox->setEnabled(false);
-            ui->comboBox_2->setEnabled(false);
+            ui->saleman->setText(query.value(1).toString());
+            ui->customer->setText(query.value(2).toString());
+            ui->saleman->setEnabled(false);
+            ui->customer->setEnabled(false);
             if (query.value(3).toString() == tr("申请中"))
             {
                 ui->comboBox_14->setCurrentIndex(0);
@@ -98,23 +100,9 @@ void deal::showEvent(QShowEvent *event)
     }
     else
     {
-        ui->comboBox->setEnabled(true);
-        ui->comboBox_2->setEnabled(true);
+        ui->saleman->setEnabled(true);
+        ui->customer->setEnabled(true);
         ui->dateTimeEdit->setDateTime(QDateTime::currentDateTime());
-        query.prepare("select name from salesman;");
-        query.exec();
-        while (query.next())
-        {
-            ui->comboBox->addItem(query.value(0).toString());
-        }
-
-        query.prepare("select name from customer;");
-        query.exec();
-        while (query.next())
-        {
-            ui->comboBox_2->addItem(query.value(0).toString());
-        }
-
         ui->comboBox_14->setCurrentIndex(0);
         ui->lineEdit_22->clear();
         ui->lineEdit_24->clear();
@@ -173,8 +161,8 @@ void deal::on_pushButton_clicked()
                 "values(?,?,?,?,?,?,?,?,?)");
         // base
         query.bindValue(0, QDateTime::currentDateTime().toString("yyyy/MM/dd hh:mm:ss"));
-        query.bindValue(1, ui->comboBox->currentText());
-        query.bindValue(2, ui->comboBox_2->currentText());
+        query.bindValue(1, ui->saleman->text());
+        query.bindValue(2, ui->customer->text());
         query.bindValue(3, ui->comboBox_14->currentText());
         query.bindValue(4, ui->lineEdit_22->text());
         query.bindValue(5, ui->lineEdit_24->text().toInt());
@@ -232,5 +220,31 @@ void deal::on_pushButton_clicked()
     else
     {
         QMessageBox::information(this, "Err", "更改失败");
+    }
+}
+
+void deal::on_saleman_editingFinished()
+{
+    QSqlQuery query;
+
+    query.prepare("select name from salesman where name like ?;");
+    query.bindValue(0,ui->saleman->text().prepend('%').append('%'));
+    query.exec();
+    if (query.next())
+    {
+        ui->saleman->setText(query.value(0).toString());
+    }
+}
+
+void deal::on_customer_editingFinished()
+{
+    QSqlQuery query;
+
+    query.prepare("select name from customer where name like ?;");
+    query.bindValue(0,ui->customer->text().prepend('%').append('%'));
+    query.exec();
+    if (query.next())
+    {
+        ui->customer->setText(query.value(0).toString());
     }
 }

@@ -22,6 +22,9 @@ customer::customer(QWidget *parent) :
     ui->comboBox_10->addItems(status);
     ui->comboBox_11->addItems(status);
     ui->comboBox_13->addItems(status);
+
+    QRegExp regxp("[\u4e00-\u9fa5]*");
+    ui->name->setValidator(new QRegExpValidator(regxp,this));
 }
 
 customer::~customer()
@@ -39,8 +42,8 @@ void customer::showEvent(QShowEvent *event)
         query.exec();
         if (query.next())
         {
-            ui->lineEdit_2->setDisabled(1);
-            ui->lineEdit_2->setText(query.value(1).toString());
+            ui->name->setDisabled(1);
+            ui->name->setText(query.value(1).toString());
             ui->sex->setCurrentText(query.value(2).toString());
             ui->comboBox_3->setCurrentText(query.value(3).toString());
             ui->ID->setText(query.value(4).toString());
@@ -81,8 +84,8 @@ void customer::showEvent(QShowEvent *event)
     }
     else
     {
-        ui->lineEdit_2->setDisabled(0);
-        ui->lineEdit_2->clear();
+        ui->name->setDisabled(0);
+        ui->name->clear();
         ui->ID->clear();
         ui->phone->clear();
         ui->lineEdit_5->clear();
@@ -132,7 +135,7 @@ void customer::on_pushButton_clicked()
         query.prepare("insert into customer(name,sex,marriage,id_card,birthday,native,contact,address,company,sz,own_company,income,base_more,credit_lines,credit_debt,debtA_bank,debtA_bank_year_limit,debtA_bank_monery_sum,debtB_bank,debtB_bank_year_limit,debtB_bank_monery_sum,debt_more,szhouse,redpaper,mortgaged,mpayment,mpayment_day,own_car,car_year,car_value,own_policy,policy_date,policy_value,person_mflow,company_mflow) "
                 "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         // base
-        query.bindValue(0, ui->lineEdit_2->text());
+        query.bindValue(0, ui->name->text());
         query.bindValue(1, ui->sex->currentText());
         query.bindValue(2, ui->comboBox_3->currentText());
         query.bindValue(3, ui->ID->text());
@@ -211,7 +214,7 @@ void customer::on_pushButton_clicked()
         query.bindValue(32, ui->lineEdit_20->text().toInt());
         query.bindValue(33, ui->lineEdit_21->text().toInt());
 
-        query.bindValue(34, ui->lineEdit_2->text());
+        query.bindValue(34, ui->name->text());
     }
 
     if (query.exec())

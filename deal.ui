@@ -52,6 +52,12 @@
           <property name="enabled">
            <bool>false</bool>
           </property>
+          <property name="maximumSize">
+           <size>
+            <width>310</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="displayFormat">
            <string>yyyy/MM/dd HH:mm:ss</string>
           </property>
@@ -69,7 +75,14 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox"/>
+         <widget class="QLineEdit" name="saleman">
+          <property name="maximumSize">
+           <size>
+            <width>306</width>
+            <height>16777215</height>
+           </size>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -83,7 +96,14 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox_2"/>
+         <widget class="QLineEdit" name="customer">
+          <property name="maximumSize">
+           <size>
+            <width>308</width>
+            <height>16777215</height>
+           </size>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>

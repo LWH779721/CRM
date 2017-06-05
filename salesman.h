@@ -23,6 +23,8 @@ public:
 private slots:
     void on_pushButton_clicked();
 
+    void on_phone_editingFinished();
+
 private:
     Ui::salesman *ui;
 };

@@ -25,6 +25,10 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_saleman_editingFinished();
+
+    void on_customer_editingFinished();
+
 private:
     Ui::deal *ui;
 };
